@@ -7,28 +7,27 @@ const fetchAddresses = require('./fetchAddresses.js');
 const validateAndFormatInput = require('./validateAndFormatInput.js');
 const formatGeoData = require('./formatGeoData.js');
 
-function reverseGeocodeCsv (csv, options) {
-  const {
-    columnNames,
-    latIdx,
-    lonIdx,
-    error
-  } = validateAndFormatInput(options);
+function reverseGeocodeCsv(csv, options) {
+  const { columnNames, latIdx, lonIdx, error } = validateAndFormatInput(
+    options
+  );
 
   if (error) {
-    throw new Error(`${error.title}: ${error.body}`)
+    throw new Error(`${error.title}: ${error.body}`);
   } else {
-    return parseCSV(csv, {}, (__, parsedCsvOutput) => {
-      fetchAddresses({ parsedCsvData: parsedCsvOutput, latIdx, lonIdx }).then(
-        res => {
-          const formattedGeoData = [
-            columnNames,
-            ...formatGeoData({ geoData: res.slice(1).flat(), columnNames })
-          ];
-          
-          return generateCSV(formattedGeoData, (__, csv) => csv);
-        }
-      );
+    return new Promise((resolve, reject) => {
+      parseCSV(csv, {}, (__, parsedCsvOutput) => {
+        fetchAddresses({ parsedCsvData: parsedCsvOutput, latIdx, lonIdx }).then(
+          res => {
+            const formattedGeoData = [
+              columnNames,
+              ...formatGeoData({ geoData: res.slice(1).flat(), columnNames })
+            ];
+
+            generateCSV(formattedGeoData, (__, csv) => resolve(csv));
+          }
+        );
+      });
     });
   }
 }
