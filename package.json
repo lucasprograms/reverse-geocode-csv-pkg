@@ -23,7 +23,7 @@
     "csv-parse": "4.2.0",
     "csv-stringify": "5.1.2",
     "dotenv": "6.2.0",
-    "node-geocoder": "3.22.0",
+    "node-geocoder": "3.22.0"
   },
   "bugs": {
     "url": "https://github.com/lucasprograms/reverse-geocode-csv-pkg/issues"
