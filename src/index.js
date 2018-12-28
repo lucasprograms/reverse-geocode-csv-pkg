@@ -24,7 +24,7 @@ function reverseGeocodeCsv(csv, options) {
         res => {
           const formattedGeoData = [
             columnNames,
-            ...formatGeoData({ geoData: res.slice(1).flat(), columnNames })
+            ...formatGeoData({ geoData: res.flat(), columnNames })
           ];
 
           generateCSV(formattedGeoData, (__, csv) => resolve(csv));
