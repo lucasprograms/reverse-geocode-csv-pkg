@@ -6,6 +6,7 @@ const fs = require('fs');
 const inputCsv = fs.readFileSync(path.resolve(__dirname, '..', 'files', 'input.csv'))
 
 const outputCsv = `city,state
+Tyler,AL
 Albertville,AL
 Alfred,ME
 Oneonta,AL
