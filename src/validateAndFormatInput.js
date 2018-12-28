@@ -1,18 +1,20 @@
-function validateAndFormatInput({ columnNames, latIdx, lonIdx }) {
-  const validColumnNames = [
-    'formattedAddress',
-    'latitude',
-    'longitude',
-    'county',
-    'state',
-    'streetNumber',
-    'streetName',
-    'city',
-    'country',
-    'countryCode',
-    'zipcode',
-    'provider'
-  ];
+const validColumnNames = [
+  'formattedAddress',
+  'latitude',
+  'longitude',
+  'county',
+  'state',
+  'streetNumber',
+  'streetName',
+  'city',
+  'country',
+  'countryCode',
+  'zipcode',
+  'provider'
+];
+
+function validateAndFormatInput(options) {
+  let { columnNames = validColumnNames, latIdx = 0, lonIdx = 1 } = options;
 
   const invalidColumns = columnNames.filter(
     columnName => !validColumnNames.includes(columnName)
@@ -26,10 +28,6 @@ function validateAndFormatInput({ columnNames, latIdx, lonIdx }) {
       }
     };
   }
-
-  latIdx = latIdx || 0;
-  lonIdx = !lonIdx && lonIdx !== 0 ? 1 : lonIdx;
-  columnNames = columnNames.length ? columnNames : validColumnNames;
 
   return { columnNames, latIdx, lonIdx };
 }

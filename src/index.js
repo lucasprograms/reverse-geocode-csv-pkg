@@ -12,24 +12,26 @@ function reverseGeocodeCsv(csv, options) {
     options
   );
 
-  if (error) {
-    throw new Error(`${error.title}: ${error.body}`);
-  } else {
-    return new Promise((resolve, reject) => {
-      parseCSV(csv, {}, (__, parsedCsvOutput) => {
-        fetchAddresses({ parsedCsvData: parsedCsvOutput, latIdx, lonIdx }).then(
-          res => {
-            const formattedGeoData = [
-              columnNames,
-              ...formatGeoData({ geoData: res.slice(1).flat(), columnNames })
-            ];
+  return new Promise((resolve, reject) => {
+    if (error) {
+      reject(error);
+    }
+    parseCSV(csv, {}, (err, parsedCsvOutput) => {
+      if (err) {
+        reject(err);
+      }
+      fetchAddresses({ parsedCsvData: parsedCsvOutput, latIdx, lonIdx }).then(
+        res => {
+          const formattedGeoData = [
+            columnNames,
+            ...formatGeoData({ geoData: res.slice(1).flat(), columnNames })
+          ];
 
-            generateCSV(formattedGeoData, (__, csv) => resolve(csv));
-          }
-        );
-      });
+          generateCSV(formattedGeoData, (__, csv) => resolve(csv));
+        }
+      );
     });
-  }
+  });
 }
 
 module.exports = reverseGeocodeCsv;
